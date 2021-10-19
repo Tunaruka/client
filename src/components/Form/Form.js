@@ -31,20 +31,18 @@ const Form = ( { currentId, setCurrentId }) => {
         else {
             dispatch(createPost(postData))
         }
-
+        clear();
     }
 
     const clear = () => {
-        setCurrentId(0);
+        setCurrentId(null);
         setPostData({ creator: '', title: '', message: '', tags: '', selectedFile: '' });
     };
 
     return (
         <Paper className={classes.paper}>
             <form autoComplete="off" noValidate className={`${classes.form} ${classes.root}`} onSubmit={handleSubmit}>
-                <Typography variant="h6">
-                    Creating a Consent
-                </Typography>
+                <Typography variant="h6">{ currentId ? `Editing ` : `Creating `}a Consent</Typography>
                 <TextField  name="creator" variant="outlined" label="Creator" fullWidth value={postData.creator}
                 //set the state using an object
                 onChange={(e) => setPostData({ ...postData, creator: e.target.value})}
@@ -59,7 +57,7 @@ const Form = ( { currentId, setCurrentId }) => {
                 />
                 <TextField  name="tags" variant="outlined" label="Tags" fullWidth value={postData.tags}
                 //set the state using an object
-                onChange={(e) => setPostData({ ...postData, tags: e.target.value})}
+                onChange={(e) => setPostData({ ...postData, tags: e.target.value.split(',')})}
                 />
                 <div className={classes.fileInput}><FileBase type="file" multiple={false} onDone={({base64}) => setPostData({ ...postData, selectedFile: base64}) }/></div>
                 <Button className={classes.buttonSubmit} variant="contained" color="primary" size="large" type="submit" fullWidth > Submit </Button>
